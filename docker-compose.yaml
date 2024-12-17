@@ -1,0 +1,36 @@
+services:
+  cinepilot_front:
+    container_name: cinepilot_front
+    build:
+      dockerfile: front.Dockerfile
+    ports:
+      - "80:80"
+      - "5173:5173"
+      - "2121:22"
+  cinepilot_back_symfony:
+    container_name: cinepilot_back_symfony
+    build:
+      dockerfile: back.symfony.Dockerfile
+    ports:
+      - "8000:8000"
+      - "2222:22"
+  cinepilot_back_spring:
+    container_name: cinepilot_back_spring
+    build:
+      dockerfile: back.spring.Dockerfile
+    ports:
+      - "8080:8080"
+      - "2323:22"
+  postgres:
+    image: postgres:latest
+    container_name: cinepilot_db
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydatabase
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+volumes:
+  postgres_data:
