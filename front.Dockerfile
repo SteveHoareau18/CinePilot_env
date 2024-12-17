@@ -1,30 +1,20 @@
-FROM ubuntu:latest
+FROM node:22.11.0-alpine
 
-RUN apt update -y && apt upgrade -y
-RUN apt install -y \
-    git \
-    openssh-server \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    software-properties-common
+FROM nginx:1.21.6-alpine
 
-RUN ssh-keygen -A
-RUN mkdir /var/run/sshd && \
-    echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
-    echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config && \
-    echo "AllowTcpForwarding yes" >> /etc/ssh/sshd_config && \
-    sed -i '/^UsePAM/d' /etc/ssh/sshd_config && \
-    echo "root:root" | chpasswd
+RUN apk add --no-cache openssh git
+RUN echo "root:root" | chpasswd  # Remplacez 'password' par un mot de passe sécurisé
+RUN ssh-keygen -A  # Génère les clés SSH par défaut
+RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 
 WORKDIR /home
 
-RUN rm -rf send.me
+RUN rm -rf CinePilot
 
 RUN git clone https://github.com/SteveHoareau18/CinePilot
 
 WORKDIR /home/CinePilot/front
 
-EXPOSE 22 80 5173
+EXPOSE 80 22 5173
 
-CMD /usr/sbin/sshd -D
+CMD ["sh", "-c", "nginx -g 'daemon off;' & /usr/sbin/sshd -D"]
