@@ -1,0 +1,68 @@
+services:
+  cinepilot_front:
+    container_name: cinepilot_front
+    build:
+      dockerfile: front.Dockerfile
+    env_file:
+      - .env
+    args:
+      GIT_USER: ${GIT_USER}
+      GIT_EMAIL: ${GIT_EMAIL}
+      GIT_PASSWORD: ${GIT_PASSWORD}
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "80:80"
+      - "5173:5173"
+      - "2121:22"
+  cinepilot_back_symfony:
+    container_name: cinepilot_back_symfony
+    build:
+      dockerfile: back.symfony.Dockerfile
+    env_file:
+      - .env
+    args:
+      GIT_USER: ${GIT_USER}
+      GIT_EMAIL: ${GIT_EMAIL}
+      GIT_PASSWORD: ${GIT_PASSWORD}
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "8000:8000"
+      - "2222:22"
+  cinepilot_back_spring:
+    container_name: cinepilot_back_spring
+    build:
+      dockerfile: back.spring.Dockerfile
+    env_file:
+      - .env
+    args:
+      GIT_USER: ${GIT_USER}
+      GIT_EMAIL: ${GIT_EMAIL}
+      GIT_PASSWORD: ${GIT_PASSWORD}
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "8080:8000"
+      - "2323:22"
+  postgres:
+    image: postgres:latest
+    container_name: cinepilot_db
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+volumes:
+  postgres_data:
