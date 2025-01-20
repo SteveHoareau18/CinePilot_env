@@ -40,12 +40,6 @@ RUN git pull
 
 WORKDIR /home/CinePilot/back/spring
 
-RUN touch .env
-
-RUN node -e "console.log(require('crypto').randomBytes(32).toString('hex'))" > /tmp/jwt_key && \
-    echo "JWT_KEY=$(cat /tmp/jwt_key)" >> .env && \
-    rm /tmp/jwt_key
-
 RUN chmod +x ./gradlew
 
 RUN ./gradlew wrapper --gradle-version=8.10.1

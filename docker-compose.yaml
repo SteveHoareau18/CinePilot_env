@@ -1,14 +1,14 @@
 services:
   cinepilot_front:
     container_name: cinepilot_front
-    build:
-      dockerfile: front.Dockerfile
     env_file:
       - .env
-    args:
-      GIT_USER: ${GIT_USER}
-      GIT_EMAIL: ${GIT_EMAIL}
-      GIT_PASSWORD: ${GIT_PASSWORD}
+    build:
+      dockerfile: front.Dockerfile
+      args:
+        GIT_USER: ${GIT_USER}
+        GIT_EMAIL: ${GIT_EMAIL}
+        GIT_PASSWORD: ${GIT_PASSWORD}
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -19,14 +19,14 @@ services:
       - "2121:22"
   cinepilot_back_symfony:
     container_name: cinepilot_back_symfony
-    build:
-      dockerfile: back.symfony.Dockerfile
     env_file:
       - .env
-    args:
-      GIT_USER: ${GIT_USER}
-      GIT_EMAIL: ${GIT_EMAIL}
-      GIT_PASSWORD: ${GIT_PASSWORD}
+    build:
+      dockerfile: back.symfony.Dockerfile
+      args:
+        GIT_USER: ${GIT_USER}
+        GIT_EMAIL: ${GIT_EMAIL}
+        GIT_PASSWORD: ${GIT_PASSWORD}
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -36,14 +36,14 @@ services:
       - "2222:22"
   cinepilot_back_spring:
     container_name: cinepilot_back_spring
-    build:
-      dockerfile: back.spring.Dockerfile
     env_file:
       - .env
-    args:
-      GIT_USER: ${GIT_USER}
-      GIT_EMAIL: ${GIT_EMAIL}
-      GIT_PASSWORD: ${GIT_PASSWORD}
+    build:
+      dockerfile: back.spring.Dockerfile
+      args:
+        GIT_USER: ${GIT_USER}
+        GIT_EMAIL: ${GIT_EMAIL}
+        GIT_PASSWORD: ${GIT_PASSWORD}
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
