@@ -5,14 +5,6 @@ services:
       - .env
     build:
       dockerfile: front.Dockerfile
-      args:
-        GIT_USER: ${GIT_USER}
-        GIT_EMAIL: ${GIT_EMAIL}
-        GIT_PASSWORD: ${GIT_PASSWORD}
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "80:80"
       - "5173:5173"
@@ -23,14 +15,6 @@ services:
       - .env
     build:
       dockerfile: back.symfony.Dockerfile
-      args:
-        GIT_USER: ${GIT_USER}
-        GIT_EMAIL: ${GIT_EMAIL}
-        GIT_PASSWORD: ${GIT_PASSWORD}
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "8000:8000"
       - "2222:22"
@@ -40,18 +24,10 @@ services:
       - .env
     build:
       dockerfile: back.spring.Dockerfile
-      args:
-        GIT_USER: ${GIT_USER}
-        GIT_EMAIL: ${GIT_EMAIL}
-        GIT_PASSWORD: ${GIT_PASSWORD}
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "8080:8000"
       - "2323:22"
-  postgres:
+  cinepilot_db:
     image: postgres:latest
     container_name: cinepilot_db
     env_file:
@@ -60,9 +36,10 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - cinepilot_postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 volumes:
-  postgres_data:
+  cinepilot_postgres_data:

@@ -1,0 +1,2 @@
+cp src/main/resources/application.properties.dev src/main/resources/application.properties && \
+echo "security.jwt.secret-key=$(node -e "console.log(require('crypto').randomBytes(32).toString('hex'))")" >> src/main/resources/application.properties

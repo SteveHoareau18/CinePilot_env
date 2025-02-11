@@ -4,6 +4,7 @@
     <data-source source="LOCAL" name="mydatabase@cinepilot_db" uuid="b5e9d676-0d42-4a1d-bcf3-5c99495e7b2a">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://cinepilot_db:5432/mydatabase</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />

@@ -8,7 +8,8 @@ RUN apt update -y && apt upgrade -y && \
         ca-certificates \
         curl \
         software-properties-common \
-        wget && \
+        wget \
+        zip && \
     ssh-keygen -A && \
     mkdir /var/run/sshd && \
     echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
@@ -23,10 +24,11 @@ RUN wget https://download.java.net/java/GA/jdk23.0.1/c28985cbf10d4e648e4004050f8
     mv jdk-23.0.1 /usr/lib/jvm/ && \
     rm openjdk-23.0.1_linux-x64_bin.tar.gz
 
-ENV JAVA_HOME=/usr/lib/jvm/jdk-23.0.1
-ENV PATH="$JAVA_HOME/bin:$PATH"
+USER root
 
-RUN export JAVA_HOME=/usr/lib/jvm/jdk-23.0.1
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+
+RUN apt-get install -y nodejs
 
 WORKDIR /home
 
@@ -36,23 +38,22 @@ RUN git clone https://github.com/SteveHoareau18/CinePilot
 
 WORKDIR /home/CinePilot
 
-RUN git pull
-
 WORKDIR /home/CinePilot/back/spring
 
 RUN chmod +x ./gradlew
 
-RUN ./gradlew wrapper --gradle-version=8.10.1
+RUN echo "export JAVA_HOME=/usr/lib/jvm/jdk-23.0.1" >> /root/.bashrc
+RUN echo "export PATH=/usr/lib/jvm/jdk-23.0.1/bin:$PATH" >> /root/.bashrc
 
-ARG GIT_USER
-ARG GIT_EMAIL
-ARG GIT_PASSWORD
+RUN git pull
 
-RUN git config --global user.email "$GIT_EMAIL" && \
-    git config --global user.name "$GIT_USER"
+COPY .env ./
+COPY env.sh ./env.sh
+COPY app-token.sh ./app-token.sh
+RUN cat .env >> /root/.bashrc
 
-RUN git config --global credential.helper 'store' && \
-    echo "https://${GIT_USER}:${GIT_PASSWORD}@github.com" > ~/.git-credentials
+RUN sh ./env.sh
+RUN sh ./app-token.sh
 
 EXPOSE 22 8000
 
